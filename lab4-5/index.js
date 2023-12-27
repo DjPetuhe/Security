@@ -31,7 +31,10 @@ app.get("/", (req, res) => {
   const refreshToken = req?.headers["refreshtoken"];
   if (accessToken) {
       const decodedToken = jwt.decode(accessToken, {complete: true});
-
+      if (!decodedToken) {
+        res.sendFile(path.join(indexPath));
+        return;
+      }
       const decodedHeader = decodedToken?.header;
 
       const currentTime = Math.floor(Date.now() / 1000);
